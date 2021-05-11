@@ -9,6 +9,7 @@ djangorestframework = "*"
 django-rest-auth = "*"
 django-cors-headers = "*"
 django-allauth = "*"
+psycopg2 = "*"
 
 [dev-packages]
 
