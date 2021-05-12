@@ -10,6 +10,7 @@ django-rest-auth = "*"
 django-cors-headers = "*"
 django-allauth = "*"
 psycopg2 = "*"
+dj-rest-auth = "*"
 
 [dev-packages]
 

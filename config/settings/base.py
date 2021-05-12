@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     # 3rd party
     "rest_framework",
     "rest_framework.authtoken",
@@ -46,6 +47,9 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
+    # Local
+    "users.apps.UsersConfig",
+    "posts",
 ]
 
 MIDDLEWARE = [
@@ -112,6 +116,7 @@ REST_FRAMEWORK = {
 # Rest auth settings
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 LOGIN_URL = "http://localhost:3000/"
 
@@ -136,7 +141,7 @@ USE_TZ = True
 # JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
 # See https://docs.djangoproject.com/en/3.1/ref/contrib/staticfiles/#manifeststaticfilesstorage
 
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+# STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 
 # Static files (CSS, JavaScript, Images)
@@ -148,3 +153,18 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "users.CustomUser"
+
+LANGUAGE_CHOICES = [
+    ("en", "English"),
+    ("zh", "Chinese"),
+]
+
+DIFFICULTY_CHOICES = [
+    ("beginner", "Beginner"),
+    ("elementary", "Elementary"),
+    ("intermediate", "Intermediate"),
+    ("advanced", "Advanced"),
+    ("master", "Master"),
+]
