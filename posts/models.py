@@ -4,12 +4,24 @@ from django.conf import settings
 
 
 class Text(models.Model):
-    """Title and body content of post, content(text_data) is cut in sentences, sentences in word, and words with their data(translation, pinyin, etc)"""
+    """Title and body content of post, content is cut in sentences"""
 
     title = models.CharField(max_length=100)
-    text_data = models.JSONField(null=True)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="text",
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    original_content = models.TextField(null=True)
     is_correction = models.BooleanField(default=False)
     is_translation = models.BooleanField(default=False)
+
+
+# class Sentence(models.Model):
+#     Text = models.ForeignKey(Text, on_delete=models.CASCADE, related_name="sentences")
+#     sentence_text = models.CharField(max_length=300)
+#     sentence_translation = models.CharField(max_length=600)
 
 
 class Post(models.Model):
@@ -32,16 +44,5 @@ class Correction(models.Model):
 
     text = models.OneToOneField(Text, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, related_name="corrections", on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-
-class Translation(models.Model):
-    """Translation to add to original post. Can be made by original user or other user if original didn't"""
-
-    text = models.OneToOneField(Text, on_delete=models.CASCADE)
-    post = models.ForeignKey(
-        Post, related_name="translations", on_delete=models.CASCADE
-    )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

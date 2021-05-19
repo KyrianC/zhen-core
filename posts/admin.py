@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Correction, Translation
+from .models import Post, Correction, Text
 
 
 @admin.register(Post)
@@ -7,11 +7,11 @@ class PostAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Correction)
-class CorrectionAdmin(admin.ModelAdmin):
+@admin.register(Text)
+class TextAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Translation)
-class TranslationAdmin(admin.ModelAdmin):
+@admin.register(Correction)
+class CorrectionAdmin(admin.ModelAdmin):
     pass
