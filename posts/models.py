@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.template.defaultfilters import slugify
 
 
 class Text(models.Model):
@@ -27,7 +28,7 @@ class Text(models.Model):
 class Post(models.Model):
     """Original Post made by user in the language he is practicing"""
 
-    slug = models.SlugField(max_length=100)
+    slug = models.SlugField(max_length=100, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     text = models.OneToOneField(Text, on_delete=models.CASCADE)
@@ -37,6 +38,11 @@ class Post(models.Model):
     difficulty = models.CharField(
         max_length=15, choices=settings.DIFFICULTY_CHOICES, default="beginner"
     )
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.text:
+            self.slug = slugify(self.text.title)
+        return super().save(*args, **kwargs)
 
 
 class Correction(models.Model):
