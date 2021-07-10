@@ -6,10 +6,10 @@ from django.conf import settings
 class CustomUser(AbstractUser):
 
     level = models.CharField(
-        max_length=15, choices=settings.DIFFICULTY_CHOICES, default="beginner"
+        max_length=15, choices=settings.DIFFICULTY_CHOICES, default="unset"
     )
     learning_language = models.CharField(
-        max_length=2, choices=settings.LANGUAGE_CHOICES, default="en"
+        max_length=5, choices=settings.LANGUAGE_CHOICES, default="unset"
     )
 
     def __str__(self):

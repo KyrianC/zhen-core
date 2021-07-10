@@ -19,8 +19,8 @@ from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/posts/", include("posts.urls")),
     path("api/auth/", include("dj_rest_auth.urls")),
+    path("api/posts/", include("posts.urls")),
     # path("verify-email/", VerifyEmailView.as_view(), name="rest_verify_email"),
     path(
         "api/auth/registration/account-confirm-email/",
