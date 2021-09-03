@@ -5,7 +5,7 @@ from django.template.defaultfilters import slugify
 
 
 class Text(models.Model):
-    """Title and body content of post, content is cut in sentences"""
+    """Title and body content of post"""
 
     title = models.CharField(max_length=100)
     author = models.ForeignKey(
@@ -32,6 +32,7 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     text = models.OneToOneField(Text, on_delete=models.CASCADE)
+    description = models.CharField(max_length=200, default="post description")
     language = models.CharField(
         max_length=2, choices=settings.LANGUAGE_CHOICES, default="en"
     )
@@ -41,7 +42,7 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug and self.text:
-            self.slug = slugify(self.text.title)
+            self.slug = slugify(self.text.title, allow_unicode=True)
         return super().save(*args, **kwargs)
 
 
