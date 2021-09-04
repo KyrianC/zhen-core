@@ -1,22 +1,25 @@
 from django.core.exceptions import ValidationError
 from rest_framework import generics
 
+from .filters import PostFilter
 from .models import Post, Text
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (
-    PostSerializer,
-    TextSerializer,
-    TextDetailSerializer,
     PostReadOnlySerializer,
+    PostSerializer,
+    TextDetailSerializer,
+    TextSerializer,
 )
 
 
 class PostList(generics.ListAPIView):
-    # TODO add filter and pagination
     queryset = Post.objects.filter(
         text__is_translation=False, text__is_correction=False
     )
     serializer_class = PostReadOnlySerializer
+    filterset_class = PostFilter
+    ordering_fields = ["created"]
+    search_fields = ["description", "text__title", "text__original_content"]
 
 
 class PostDetail(generics.RetrieveDestroyAPIView):
