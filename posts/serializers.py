@@ -9,7 +9,7 @@ from .models import Post, Text
 # so customUserSerializer will be present only on readonly views
 
 
-class TextDetailSerializer:
+class TextDetailSerializer(serializers.ModelSerializer):
     author = CustomUserSerializer()
 
     class Meta:
