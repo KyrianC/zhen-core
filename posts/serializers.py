@@ -4,13 +4,8 @@ from users.serializers import CustomUserSerializer
 from .models import Post, Text
 
 
-# NOTE using two text serializers: one with user custom serializer and one
-# without, then two post serializers who will take each text serializers
-# so customUserSerializer will be present only on readonly views
-
-
-class TextDetailSerializer(serializers.ModelSerializer):
-    author = CustomUserSerializer()
+class TextSerializer(serializers.ModelSerializer):
+    author = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = Text
@@ -24,32 +19,7 @@ class TextDetailSerializer(serializers.ModelSerializer):
         )
 
 
-class PostReadOnlySerializer(serializers.ModelSerializer):
-    text = TextDetailSerializer()
-
-    class Meta:
-        model = Post
-        depth = 3
-        fields = (
-            "id",
-            "slug",
-            "language",
-            "difficulty",
-            "description",
-            "text",
-            "updated",
-            "created",
-        )
-
-
 class TextSerializer(serializers.ModelSerializer):
-    """
-    To use only with with PostSerializer, otherwise if we use
-    CustomUserSerializer for the author field it will try to create
-    a user at the same time as the post & text and I don't know
-    how to prevent that
-    """
-
     class Meta:
         model = Text
         fields = (
@@ -79,7 +49,8 @@ class PostSerializer(serializers.ModelSerializer):
             "created",
         )
 
-    # Need to write these methods to allow writable nested fields
+    # Need to write these methods to allow writable nested serializer
+    # https://www.django-rest-framework.org/api-guide/relations/#writable-nested-serializers
     def create(self, validated_data):
         text_data = validated_data.pop("text")
         text = Text.objects.create(**text_data)
