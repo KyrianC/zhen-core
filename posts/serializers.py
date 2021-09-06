@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from users.serializers import CustomUserSerializer
 
-from .models import Post, Text
+from .models import Post, Text, Correction
 
 
 class TextSerializer(serializers.ModelSerializer):
@@ -79,3 +79,12 @@ class PostSerializer(serializers.ModelSerializer):
         text.save()
 
         return instance
+
+
+class CorrectionSerializer(serializers.ModelSerializer):
+    text = TextSerializer(read_only=True)
+    post = PostSerializer(read_only=True)
+
+    class Meta:
+        model = Correction
+        fields = ("text", "post", "is_valid")

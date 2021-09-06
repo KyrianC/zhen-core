@@ -5,7 +5,7 @@ from django.template.defaultfilters import slugify
 
 
 class Text(models.Model):
-    """Title and body content of post"""
+    """only the Title and content of post/correction/translation"""
 
     title = models.CharField(max_length=100)
     author = models.ForeignKey(
@@ -17,12 +17,9 @@ class Text(models.Model):
     original_content = models.TextField(null=True)
     is_correction = models.BooleanField(default=False)
     is_translation = models.BooleanField(default=False)
-
-
-# class Sentence(models.Model):
-#     Text = models.ForeignKey(Text, on_delete=models.CASCADE, related_name="sentences")
-#     sentence_text = models.CharField(max_length=300)
-#     sentence_translation = models.CharField(max_length=600)
+    # post (optional)
+    # correction (optional)
+    # translation (optional)
 
 
 class Post(models.Model):
@@ -39,6 +36,7 @@ class Post(models.Model):
     difficulty = models.CharField(
         max_length=15, choices=settings.DIFFICULTY_CHOICES, default="beginner"
     )
+    # corrections
 
     def save(self, *args, **kwargs):
         if not self.slug and self.text:
@@ -51,5 +49,8 @@ class Correction(models.Model):
 
     text = models.OneToOneField(Text, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, related_name="corrections", on_delete=models.CASCADE)
+    is_valid = models.BooleanField(
+        default=False
+    )  # to be validated by original author or a 3rd user
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

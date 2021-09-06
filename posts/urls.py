@@ -8,4 +8,9 @@ urlpatterns = [
     path("create/", views.PostCreate.as_view(), name="create"),
     path("<slug:slug>/", views.PostDetail.as_view(), name="detail"),
     path("correct/<slug:slug>/", views.TextCorrect.as_view(), name="correct"),
+    path(
+        "correction/<int:pk>/",
+        views.TextCorrectionDetail.as_view(),
+        name="correction_detail",
+    ),
 ]
