@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-_%yk!%a)xph36(_*-4(f9_q#yp6u3qg9p=e1rt&@@j9c03!ia0"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 CORS_ORIGIN_WHITELIST = (
     "http://localhost:8000",
