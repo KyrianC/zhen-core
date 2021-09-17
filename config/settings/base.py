@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
+    "rest_framework_simplejwt",
     # Local
     "users.apps.UsersConfig",
     "posts",
@@ -110,8 +111,9 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.isAuthenticatedOrReadOnly",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.TokenAuthentication",
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 3,
@@ -122,12 +124,16 @@ REST_FRAMEWORK = {
     ],
 }
 
+# JWT settings
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = "zhen-auth"
+JWT_AUTH_REFRESH_COOKIE = "refresh_token"
 # Rest auth settings
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-LOGIN_URL = "http://localhost:3000/login"
+# LOGIN_URL = "http://localhost:3000/login"
 
 # Define custom serializers for dj_rest_auth
 REST_AUTH_SERIALIZERS = {

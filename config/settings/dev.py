@@ -6,6 +6,8 @@ ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+# rest auth
+LOGIN_URL = "http://localhost:3000/login"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

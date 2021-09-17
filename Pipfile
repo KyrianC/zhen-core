@@ -12,6 +12,7 @@ django-allauth = "*"
 psycopg2 = "*"
 dj-rest-auth = "*"
 django-filter = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
