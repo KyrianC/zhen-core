@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     # Local
     "users.apps.UsersConfig",
     "posts",
+    "custom_auth",
 ]
 
 MIDDLEWARE = [

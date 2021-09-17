@@ -16,9 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+)
+from custom_auth.views import CustomLoginView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # put before dj_rest_auth.urls to prioritize it over dj_rest_auth api/auth/login/ view
+    path("api/auth/login/", CustomLoginView.as_view(), name="custom-login"),
     path("api/auth/", include("dj_rest_auth.urls")),
     path("api/posts/", include("posts.urls")),
     path("api/users/", include("users.urls")),
