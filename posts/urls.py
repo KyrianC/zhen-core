@@ -6,8 +6,8 @@ app_name = "posts"
 urlpatterns = [
     path("", views.PostList.as_view(), name="list"),
     path("create/", views.PostCreate.as_view(), name="create"),
-    path("<slug:slug>/", views.PostDetail.as_view(), name="detail"),
-    path("correct/<slug:slug>/", views.TextCorrect.as_view(), name="correct"),
+    path("<str:slug>/", views.PostDetail.as_view(), name="detail"),
+    path("correct/<str:slug>/", views.TextCorrect.as_view(), name="correct"),
     path(
         "correction/<int:pk>/",
         views.TextCorrectionDetail.as_view(),
