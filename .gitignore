@@ -1,13 +1,16 @@
 .DS_Store
+.vscode
 .idea
 *.log
 tmp/
-.env
-.envrc
 
-
-__pycache__/
+**/__pycache__/
 *.py[cod]
 *.egg
 build
 htmlcov
+
+*.http
+.env
+.envrc
+.dir-locals.el
