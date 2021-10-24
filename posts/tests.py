@@ -19,7 +19,7 @@ class PostTest(TestCase):
                 username=f"test{i}", email=f"test{i}@example.com", password="secret"
             )
             text = Text.objects.create(
-                title="title", original_content="content", author=user
+                title=f"title{i}", original_content=f"content{i}", author=user
             )
             Post.objects.create(
                 text=text,

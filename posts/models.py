@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.text import slugify
@@ -21,11 +22,21 @@ class Text(models.Model):
     # correction (optional)
     # translation (optional)
 
+    def clean(self, *args, **kwargs):
+        if self.post is None and self.correction is None and self.translation is None:
+            raise ValidationError(
+                "Text need at least one of these fields: 'post', 'correction', 'translation'"
+            )
+        return super().clean(*args, **kwargs)
+
+    class Meta:
+        ordering = ["-id"]
+
 
 class Post(models.Model):
     """Original Post made by user in the language he is practicing"""
 
-    slug = models.SlugField(max_length=100, null=True)
+    slug = models.SlugField(max_length=100, null=True, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     text = models.OneToOneField(Text, on_delete=models.CASCADE)
@@ -42,6 +53,9 @@ class Post(models.Model):
         if not self.slug and self.text:
             self.slug = slugify(self.text.title, allow_unicode=True)
         return super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ["-created"]
 
 
 class Correction(models.Model):
