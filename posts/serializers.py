@@ -19,19 +19,6 @@ class TextSerializer(serializers.ModelSerializer):
         )
 
 
-class TextSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Text
-        fields = (
-            "id",
-            "title",
-            "original_content",
-            "author",
-            "is_correction",
-            "is_translation",
-        )
-
-
 class PostSerializer(serializers.ModelSerializer):
     text = TextSerializer()
 

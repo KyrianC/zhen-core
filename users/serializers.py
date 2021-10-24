@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import CustomUser
-from posts.models import Text
+from posts.models import Text, Correction
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -9,15 +9,32 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = ("pk", "username", "email", "level", "learning_language")
 
 
+class UserCorrectionSerializer(serializers.ModelSerializer):
+    post = serializers.HyperlinkedRelatedField(
+        read_only=True, view_name="posts:detail", lookup_field="slug"
+    )
+
+    class Meta:
+        model = Correction
+        fields = ("is_valid", "post")
+
+
 class UserTextSerializer(serializers.ModelSerializer):
-    """
-    Serializer to be used in UserProfileTextSerializer only.
-    Same to posts.TextSerializer but without the author field
-    """
+    post = serializers.HyperlinkedRelatedField(
+        read_only=True, view_name="posts:detail", lookup_field="slug"
+    )
+    correction = UserCorrectionSerializer(read_only=True)
 
     class Meta:
         model = Text
-        fields = ("id", "title", "is_correction", "is_translation")
+        fields = (
+            "id",
+            "title",
+            "is_correction",
+            "is_translation",
+            "post",
+            "correction",
+        )
 
 
 class UserProfileTextSerializer(serializers.ModelSerializer):
