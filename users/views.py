@@ -1,11 +1,13 @@
 from rest_framework import generics
 
-from .models import CustomUser
-from .serializers import UserProfileTextSerializer
+from django.contrib.auth import get_user_model
+from .serializers import UserTextSerializer
+
+User = get_user_model()
 
 
 class UserTextList(generics.RetrieveAPIView):
-    queryset = CustomUser.objects.all()
+    queryset = User.objects.all()
     # TODO make UUID to prevent user enumeration
-    lookup_field = "pk"
-    serializer_class = UserProfileTextSerializer
+    lookup_field = "username"
+    serializer_class = UserTextSerializer
