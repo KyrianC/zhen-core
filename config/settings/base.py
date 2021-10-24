@@ -112,7 +112,7 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.isAuthenticatedOrReadOnly",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        # "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
         # "rest_framework.authentication.TokenAuthentication",
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
@@ -183,9 +183,9 @@ LANGUAGE_CHOICES = [
 ]
 
 DIFFICULTY_CHOICES = [
-    ("beginner", "Beginner"),
-    ("elementary", "Elementary"),
-    ("intermediate", "Intermediate"),
-    ("advanced", "Advanced"),
-    ("master", "Master"),
+    ("1", "Beginner"),
+    ("2", "Elementary"),
+    ("3", "Intermediate"),
+    ("4", "Advanced"),
+    ("5", "Master"),
 ]

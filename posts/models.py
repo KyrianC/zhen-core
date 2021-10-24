@@ -1,70 +1,65 @@
-from django.db import models
-from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
 from django.conf import settings
+from django.db import models
 from django.utils.text import slugify
+from unidecode import unidecode
 
 
 class Text(models.Model):
-    """only the Title and content of post/correction/translation"""
-
-    title = models.CharField(max_length=100)
-    author = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        related_name="text",
-        on_delete=models.CASCADE,
-        null=True,
-    )
-    original_content = models.TextField(null=True)
-    is_correction = models.BooleanField(default=False)
-    is_translation = models.BooleanField(default=False)
-    # post (optional)
-    # correction (optional)
-    # translation (optional)
-
-    def clean(self, *args, **kwargs):
-        if self.post is None and self.correction is None and self.translation is None:
-            raise ValidationError(
-                "Text need at least one of these fields: 'post', 'correction', 'translation'"
-            )
-        return super().clean(*args, **kwargs)
-
-    class Meta:
-        ordering = ["-id"]
-
-
-class Post(models.Model):
-    """Original Post made by user in the language he is practicing"""
-
-    slug = models.SlugField(max_length=100, null=True, unique=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    text = models.OneToOneField(Text, on_delete=models.CASCADE)
-    description = models.CharField(max_length=200, default="post description")
-    language = models.CharField(
-        max_length=2, choices=settings.LANGUAGE_CHOICES, default="en"
-    )
+    title = models.CharField(max_length=255)
+    slug = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    content = models.TextField()
     difficulty = models.CharField(
         max_length=15, choices=settings.DIFFICULTY_CHOICES, default="beginner"
     )
-    # corrections
+    language = models.CharField(
+        max_length=2, choices=settings.LANGUAGE_CHOICES, default="en"
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
 
     def save(self, *args, **kwargs):
         if not self.slug and self.text:
-            self.slug = slugify(self.text.title, allow_unicode=True)
+            self.slug = slugify(unidecode(self.text.title))  # decode chinese characters
         return super().save(*args, **kwargs)
 
     class Meta:
-        ordering = ["-created"]
+        abstract = True
+        unique_together = ["title", "slug", "difficulty"]
+        ordering = ["-updated"]
 
 
-class Correction(models.Model):
-    """Corrections of orginal post made by native speaking user"""
+class Post(Text):
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="posts",
+        on_delete=models.CASCADE,
+        null=True,
+    )
 
-    text = models.OneToOneField(Text, on_delete=models.CASCADE)
+
+class Correction(Text):
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="corrections",
+        on_delete=models.CASCADE,
+        null=True,
+    )
     post = models.ForeignKey(Post, related_name="corrections", on_delete=models.CASCADE)
-    is_valid = models.BooleanField(
-        default=False
-    )  # to be validated by original author or a 3rd user
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    is_valid = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if self.difficulty is None:
+            self.difficulty = post.difficulty
+        if self.language is None:
+            self.language = post.language
+        return super().save(*args, **kwargs)
+
+    def validate(self):
+        other_corrections = post.corrections.all().exclude(pk=self.id)
+        for correction in other_corrections:
+            correction.is_valid = False
+        self.is_valid = True

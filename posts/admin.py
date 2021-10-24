@@ -7,11 +7,6 @@ class PostAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Text)
-class TextAdmin(admin.ModelAdmin):
-    pass
-
-
 @admin.register(Correction)
 class CorrectionAdmin(admin.ModelAdmin):
     pass

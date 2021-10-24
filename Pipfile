@@ -13,6 +13,7 @@ psycopg2 = "*"
 dj-rest-auth = "*"
 django-filter = "*"
 djangorestframework-simplejwt = "*"
+unidecode = "*"
 
 [dev-packages]
 
