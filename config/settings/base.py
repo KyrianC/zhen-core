@@ -112,7 +112,7 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.isAuthenticatedOrReadOnly",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
         # "rest_framework.authentication.TokenAuthentication",
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
@@ -177,15 +177,22 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.CustomUser"
 
+ENGLISH = "en"
+CHINESE = "zh"
 LANGUAGE_CHOICES = [
-    ("en", "English"),
-    ("zh", "Chinese"),
+    (ENGLISH, "English"),
+    (CHINESE, "Chinese"),
 ]
 
+BEGINNER = "1"
+ELEMENTARY = "2"
+INTERMEDIATE = "3"
+ADVANCED = "4"
+MASTER = "5"
 DIFFICULTY_CHOICES = [
-    ("1", "Beginner"),
-    ("2", "Elementary"),
-    ("3", "Intermediate"),
-    ("4", "Advanced"),
-    ("5", "Master"),
+    (BEGINNER, "Beginner"),
+    (ELEMENTARY, "Elementary"),
+    (INTERMEDIATE, "Intermediate"),
+    (ADVANCED, "Advanced"),
+    (MASTER, "Master"),
 ]

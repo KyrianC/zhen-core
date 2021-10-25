@@ -31,8 +31,7 @@ class PostCreate(generics.CreateAPIView):
     serializer_class = PostSerializer
 
     def perform_create(self, serializer):
-        post = serializer.save()
-        post.author = self.request.user
+        post = serializer.save(author=self.request.user)
         return super().perform_create(serializer)
 
 
@@ -43,8 +42,16 @@ class CorrectionCreate(generics.CreateAPIView):
     lookup_field = "slug"
 
     def perform_create(self, serializer):
-        correction = serializer.save()
-        correction.author = self.request.user
+        author = self.request.user
+        slug = self.kwargs["slug"]
+        post = Post.objects.get(slug=slug)
+        correction = serializer.save(
+            author=author,
+            post=post,
+            description=post.description,
+            language=post.language,
+            difficulty=post.difficulty,
+        )
         return super().perform_create(serializer)
 
 
@@ -52,3 +59,4 @@ class CorrectionDetail(generics.RetrieveUpdateAPIView):
     queryset = Correction.objects.all()
     serializer_class = CorrectionSerializer
     permissions_classes = (IsCorrectedAuthorOrReadOnly, IsAuthorOrReadOnly)
+    lookup_field = "slug"

@@ -5,15 +5,19 @@ from unidecode import unidecode
 
 
 class Text(models.Model):
-    title = models.CharField(max_length=255)
-    slug = models.CharField(max_length=255)
+    title = models.CharField(max_length=30)
+    slug = models.SlugField(max_length=30)
     description = models.CharField(max_length=255)
     content = models.TextField()
     difficulty = models.CharField(
-        max_length=15, choices=settings.DIFFICULTY_CHOICES, default="beginner"
+        max_length=15,
+        choices=settings.DIFFICULTY_CHOICES,
+        default=settings.ENGLISH,
     )
     language = models.CharField(
-        max_length=2, choices=settings.LANGUAGE_CHOICES, default="en"
+        max_length=2,
+        choices=settings.LANGUAGE_CHOICES,
+        default=settings.ELEMENTARY,
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -22,8 +26,8 @@ class Text(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        if not self.slug and self.text:
-            self.slug = slugify(unidecode(self.text.title))  # decode chinese characters
+        if not self.slug:
+            self.slug = slugify(unidecode(self.title))  # decode chinese characters
         return super().save(*args, **kwargs)
 
     class Meta:
