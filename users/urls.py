@@ -4,5 +4,10 @@ from . import views
 app_name = "users"
 
 urlpatterns = [
-    path("<str:username>/", views.UserTextList.as_view(), name="texts"),
+    path("<str:username>/posts/", views.UserPostList.as_view(), name="posts"),
+    path(
+        "<str:username>/corrections/",
+        views.UserCorrectionsList.as_view(),
+        name="corrections",
+    ),
 ]
