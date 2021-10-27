@@ -63,7 +63,7 @@ class Correction(Text):
         return super().save(*args, **kwargs)
 
     def validate(self):
-        other_corrections = post.corrections.all().exclude(pk=self.id)
+        other_corrections = self.post.corrections.all().exclude(pk=self.id)
         for correction in other_corrections:
             correction.is_valid = False
         self.is_valid = True

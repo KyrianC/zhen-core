@@ -117,7 +117,7 @@ REST_FRAMEWORK = {
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 3,
+    "PAGE_SIZE": 6,
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.OrderingFilter",
@@ -184,14 +184,14 @@ LANGUAGE_CHOICES = [
     (CHINESE, "Chinese"),
 ]
 
-BEGINNER = "1"
-ELEMENTARY = "2"
+ELEMENTARY = "1"
+BEGINNER = "2"
 INTERMEDIATE = "3"
 ADVANCED = "4"
 MASTER = "5"
 DIFFICULTY_CHOICES = [
-    (BEGINNER, "Beginner"),
     (ELEMENTARY, "Elementary"),
+    (BEGINNER, "Beginner"),
     (INTERMEDIATE, "Intermediate"),
     (ADVANCED, "Advanced"),
     (MASTER, "Master"),
