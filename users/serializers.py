@@ -7,7 +7,15 @@ User = get_user_model()
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("pk", "username", "email", "level", "learning_language")
+        fields = (
+            "pk",
+            "username",
+            "email",
+            "level",
+            "get_level_display",
+            "learning_language",
+            "get_learning_language_display",
+        )
 
 
 # class UserCorrectionsSerializer(serializers.ModelSerializer):

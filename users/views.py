@@ -5,12 +5,16 @@ from posts.serializers import PostSerializer, CorrectionSerializer
 
 
 class UserPostList(generics.ListAPIView):
-    queryset = Post.objects.all()
-    lookup_field = "username"
     serializer_class = PostSerializer
+
+    def get_queryset(self):
+        username = self.kwargs.get("username")
+        return Post.objects.filter(author__username=username)
 
 
 class UserCorrectionsList(generics.ListAPIView):
-    queryset = Correction.objects.all()
-    lookup_field = "username"
     serializer_class = CorrectionSerializer
+
+    def get_queryset(self):
+        username = self.kwargs.get("username")
+        return Correction.objects.filter(author__username=username)
