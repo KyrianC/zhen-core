@@ -27,12 +27,12 @@ class Text(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(unidecode(self.title))  # decode chinese characters
+            # decode chinese characters
+            self.slug = slugify(unidecode(self.title))
         return super().save(*args, **kwargs)
 
     class Meta:
         abstract = True
-        unique_together = ["title", "slug", "difficulty"]
         ordering = ["-updated"]
 
 
@@ -44,6 +44,9 @@ class Post(Text):
         null=True,
     )
 
+    class Meta:
+        unique_together = ["title", "slug", "difficulty"]
+
 
 class Correction(Text):
     author = models.ForeignKey(
@@ -53,17 +56,25 @@ class Correction(Text):
         null=True,
     )
     post = models.ForeignKey(Post, related_name="corrections", on_delete=models.CASCADE)
+    note = models.TextField(null=True, blank=True)
+    score = models.PositiveSmallIntegerField(default=0)
+    score_comment = models.CharField(max_length=50)
     is_valid = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if self.difficulty is None:
-            self.difficulty = post.difficulty
+            self.difficulty = self.post.difficulty
         if self.language is None:
-            self.language = post.language
+            self.language = self.post.language
         return super().save(*args, **kwargs)
 
-    def validate(self):
-        other_corrections = self.post.corrections.all().exclude(pk=self.id)
+    def make_valid(self):
+        """
+        make it the one true correction of the post when validated by
+        post author
+        """
+        other_corrections = self.post.corrections.all().exclude(id=self.id)
         for correction in other_corrections:
             correction.is_valid = False
         self.is_valid = True
+        self.save()
