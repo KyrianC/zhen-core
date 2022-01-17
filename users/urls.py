@@ -10,4 +10,9 @@ urlpatterns = [
         views.UserCorrectionsList.as_view(),
         name="corrections",
     ),
+    path(
+        "<str:username>/corrected/",
+        views.UserCorrectedList.as_view(),
+        name="corrected",
+    ),
 ]
