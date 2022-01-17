@@ -13,4 +13,14 @@ urlpatterns = [
         views.CorrectionDetail.as_view(),
         name="correction_detail",
     ),
+    path(
+        "correction/list/<slug:post_slug>/",
+        views.PostCorrectionList.as_view(),
+        name="correction-list",
+    ),
+    path(
+        "correction/validate/<int:correction_id>/",
+        views.validate_correction,
+        name="correction-validate",
+    ),
 ]

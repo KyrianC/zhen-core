@@ -1,4 +1,7 @@
-from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import generics, status
+from django.core.exceptions import ObjectDoesNotExist
 
 from .filters import PostFilter
 from .models import Correction, Post
@@ -35,6 +38,7 @@ class PostCreate(generics.CreateAPIView):
         return super().perform_create(serializer)
 
 
+# BUG difficulty not set properly
 class CorrectionCreate(generics.CreateAPIView):
     queryset = Correction.objects.all()
     serializer_class = CorrectionSerializer
@@ -55,8 +59,34 @@ class CorrectionCreate(generics.CreateAPIView):
         return super().perform_create(serializer)
 
 
+@api_view(["POST"])
+def validate_correction(request, correction_id):
+    print(correction_id)
+    try:
+        correction = Correction.objects.get(id=correction_id)
+    except ObjectDoesNotExist:
+        return Response(
+            {"not_found": "error: post or correction not found"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    post = correction.post
+    if post.author != request.user:
+        return ValidationError("You cannot validate other users posts")
+    correction.make_valid()
+    return Response({"is_valid": correction.is_valid}, status=status.HTTP_200_OK)
+
+
 class CorrectionDetail(generics.RetrieveUpdateAPIView):
     queryset = Correction.objects.all()
     serializer_class = CorrectionSerializer
     permissions_classes = (IsCorrectedAuthorOrReadOnly, IsAuthorOrReadOnly)
     lookup_field = "slug"
+
+
+class PostCorrectionList(generics.ListAPIView):
+    serializer_class = CorrectionSerializer
+
+    def get_queryset(self):
+        post = self.kwargs.get("post_slug")
+        return Correction.objects.filter(post__slug=post)
