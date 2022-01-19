@@ -15,6 +15,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             "get_level_display",
             "learning_language",
             "get_learning_language_display",
+            "show_notifications",
         )
 
 

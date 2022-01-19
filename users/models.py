@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
     learning_language = models.CharField(
         max_length=5, choices=settings.LANGUAGE_CHOICES, default="unset"
     )
+    show_notifications = models.BooleanField(default=False)
 
     def __str__(self):
         return self.email

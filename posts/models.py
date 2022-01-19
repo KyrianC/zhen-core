@@ -60,6 +60,7 @@ class Correction(Text):
     score = models.PositiveSmallIntegerField(default=0)
     score_comment = models.CharField(max_length=50)
     is_valid = models.BooleanField(default=False)
+    seen_by_author = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if self.difficulty is None:

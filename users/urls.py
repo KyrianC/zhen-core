@@ -4,6 +4,11 @@ from . import views
 app_name = "users"
 
 urlpatterns = [
+    path(
+        "unshow-notifications/",
+        views.unshow_notifications,
+        name="unshow-notifications",
+    ),
     path("<str:username>/posts/", views.UserPostList.as_view(), name="posts"),
     path(
         "<str:username>/corrections/",

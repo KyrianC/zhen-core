@@ -62,6 +62,7 @@ class CorrectionSerializer(serializers.ModelSerializer):
             "language",
             "get_language_display",
             "is_valid",
+            "seen_by_author",
             "created",
             "updated",
         )

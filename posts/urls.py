@@ -19,6 +19,11 @@ urlpatterns = [
         name="correction-list",
     ),
     path(
+        "correction/mark-seen/<int:correction_id>/",
+        views.confirm_author_viewed_correction,
+        name="mark-correction-seen",
+    ),
+    path(
         "correction/validate/<int:correction_id>/",
         views.validate_correction,
         name="correction-validate",

@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics, status
-from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
 
 from .filters import PostFilter
 from .models import Correction, Post
@@ -61,20 +61,28 @@ class CorrectionCreate(generics.CreateAPIView):
 
 @api_view(["POST"])
 def validate_correction(request, correction_id):
-    print(correction_id)
-    try:
-        correction = Correction.objects.get(id=correction_id)
-    except ObjectDoesNotExist:
-        return Response(
-            {"not_found": "error: post or correction not found"},
-            status=status.HTTP_404_NOT_FOUND,
-        )
-
+    correction = get_object_or_404(Correction, id=correction_id)
     post = correction.post
     if post.author != request.user:
         return ValidationError("You cannot validate other users posts")
     correction.make_valid()
     return Response({"is_valid": correction.is_valid}, status=status.HTTP_200_OK)
+
+
+@api_view()
+def confirm_author_viewed_correction(request, correction_id):
+    """
+    send request when author view a new correction of his post and mark it as seen
+    """
+    correction = get_object_or_404(Correction, id=correction_id)
+    if correction.post.author == request.user:
+        correction.seen_by_author = True
+        correction.save()
+        return Response(
+            {"seen_by_author": correction.seen_by_author}, status=status.HTTP_200_OK
+        )
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CorrectionDetail(generics.RetrieveUpdateAPIView):
