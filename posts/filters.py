@@ -12,9 +12,7 @@ class PostFilter(filters.FilterSet):
     difficulty = MultipleChoiceFilter(
         choices=settings.DIFFICULTY_CHOICES, widget=CSVWidget
     )
-    corrected = BooleanFilter(
-        field_name="corrections", lookup_expr="isnull", exclude=True
-    )
+    corrected = BooleanFilter(field_name="corrections", lookup_expr="is_valid")
 
     class Meta:
         model = Post
