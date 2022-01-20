@@ -5,6 +5,8 @@ User = get_user_model()
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
+    posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
     class Meta:
         model = User
         fields = (
@@ -16,26 +18,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
             "learning_language",
             "get_learning_language_display",
             "show_notifications",
+            "posts",
+            "corrected",
         )
-
-
-# class UserCorrectionsSerializer(serializers.ModelSerializer):
-#     # import here to avoid circular import with posts.serializers
-#     from posts.serializers import CorrectionSerializer
-
-#     corrections = CorrectionSerializer(read_only=True, many=True)
-
-#     class Meta:
-#         model = User
-#         fields = ("corrections",)
-
-
-# class UserPostSerializer(serializers.ModelSerializer):
-#     # import here to avoid circular import with posts.serializers
-#     from posts.serializers import PostSerializer
-
-#     posts = PostSerializer(read_only=True, many=True)
-
-#     class Meta:
-#         model = User
-#         fields = ("posts",)

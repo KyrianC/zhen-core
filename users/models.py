@@ -13,5 +13,9 @@ class CustomUser(AbstractUser):
     )
     show_notifications = models.BooleanField(default=False)
 
+    @property
+    def corrected(self):
+        return [c.post.pk for c in self.corrections.all()]
+
     def __str__(self):
         return self.email
