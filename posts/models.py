@@ -44,6 +44,10 @@ class Post(Text):
         null=True,
     )
 
+    @property
+    def has_new_corrections(self):
+        return self.corrections.filter(seen_by_author=False).exists()
+
     class Meta:
         unique_together = ["title", "slug", "difficulty"]
 

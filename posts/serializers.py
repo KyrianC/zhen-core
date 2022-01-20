@@ -6,9 +6,7 @@ from .models import Post, Correction
 
 class PostSerializer(serializers.ModelSerializer):
     author = CustomUserSerializer(read_only=True)
-    corrections = serializers.SlugRelatedField(
-        many=True, read_only=True, slug_field="slug"
-    )
+    corrections = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Post
@@ -24,6 +22,7 @@ class PostSerializer(serializers.ModelSerializer):
             "get_difficulty_display",
             "language",
             "get_language_display",
+            "has_new_corrections",
             "created",
             "updated",
         )
