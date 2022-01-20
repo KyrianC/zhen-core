@@ -39,5 +39,5 @@ def unshow_notifications(request):
         user.show_notifications = False
         user.save()
     return Response(
-        {"show_notifications": user.show_notfications}, status=status.HTTP_200_OK
+        {"show_notifications": user.show_notifications}, status=status.HTTP_200_OK
     )

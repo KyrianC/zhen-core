@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
@@ -60,6 +61,7 @@ class CorrectionCreate(generics.CreateAPIView):
 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def validate_correction(request, correction_id):
     correction = get_object_or_404(Correction, id=correction_id)
     post = correction.post
@@ -69,7 +71,8 @@ def validate_correction(request, correction_id):
     return Response({"is_valid": correction.is_valid}, status=status.HTTP_200_OK)
 
 
-@api_view()
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def confirm_author_viewed_correction(request, correction_id):
     """
     send request when author view a new correction of his post and mark it as seen
