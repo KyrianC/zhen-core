@@ -5,16 +5,17 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 
-WORKDIR /app
+WORKDIR /zhen-api
 
 RUN apk update \
     # needed on Alpine for the cryptography and psycopg2 packages
     && apk add gcc postgresql-dev musl-dev python3-dev libffi-dev openssl-dev cargo
 
 RUN pip install --upgrade pip
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install pipenv
+COPY Pipfile Pipfile.lock ./
+RUN python -m pipenv install --dev --system --deploy --ignore-pipfile
 
-EXPOSE 8888
+EXPOSE 8000
 
-COPY . .
+COPY . ./

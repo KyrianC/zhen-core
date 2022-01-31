@@ -1,9 +1,13 @@
 import os
 from .base import *
 
-DEBUG = True
-
 ALLOWED_HOSTS = ["*"]
+
+
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:8000",
+    "http://localhost:3000",
+)
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 

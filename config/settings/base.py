@@ -14,7 +14,8 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent  # config
+ROOT_DIR = BASE_DIR.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -23,11 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-CORS_ORIGIN_WHITELIST = (
-    "http://localhost:8000",
-    "http://localhost:3000",
-)
-
+DEBUG = int(os.environ.get("DEBUG"))
 
 # Application definition
 
@@ -169,6 +166,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
+STATIC_ROOT = ROOT_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

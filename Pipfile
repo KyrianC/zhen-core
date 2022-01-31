@@ -14,6 +14,7 @@ dj-rest-auth = "*"
 django-filter = "*"
 djangorestframework-simplejwt = "*"
 unidecode = "*"
+gunicorn = "*"
 
 [dev-packages]
 
