@@ -15,6 +15,7 @@ django-filter = "*"
 djangorestframework-simplejwt = "*"
 unidecode = "*"
 gunicorn = "*"
+django-anymail = {extras = ["mailgun"], version = "*"}
 
 [dev-packages]
 
