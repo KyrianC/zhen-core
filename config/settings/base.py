@@ -131,7 +131,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-# LOGIN_URL = "http://localhost:3000/login"
+LOGIN_URL = os.environ.get("NUXT_LOGIN_URL", "http://localhost:3000/login")
 
 # Define custom serializers for dj_rest_auth
 REST_AUTH_SERIALIZERS = {

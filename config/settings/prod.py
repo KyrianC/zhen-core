@@ -7,7 +7,10 @@ from .base import *
 
 CORS_ORIGIN_WHITELIST = os.environ.get("DJANGO_CORS_ORIGIN_WHITELIST").split(" ")
 
+CSRF_TRUSTED_ORIGINS = os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS").split(" ")
+
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+
 
 INSTALLED_APPS += [
     "anymail",
@@ -49,6 +52,8 @@ LOGGING = {
         },
     },
 }
+
+CSRF_COOKIE_SECURE = True
 
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 
